@@ -26,8 +26,8 @@ class Menu:
         self.coin = pygame.image.load('data/img/Static/coin.png')
         self.font = pygame.font.Font('data/fonts/at01.ttf', int(height // 17.28))
         self.price = price
-        self.balance = balance #деньги
-        self.cur_killed = '0'
+        self.balance = balance # деньги
+        self.cur_killed = '0'  # Количество убийств на данном уровне
         self.level = level
         self.killed = killed
         self.boss_killed = 3 ** (self.level // 5)
