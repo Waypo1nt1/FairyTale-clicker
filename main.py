@@ -73,6 +73,7 @@ if __name__ == '__main__':
                                     # Получение всех данных по соотвутствующему id (индекс кнопки + 1)
                                     res = con.execute('''SELECT * from saves WHERE id = ?''',
                                                       (int(savemenu.buttons.index(btn) + 1),)).fetchall()
+                                    con.close()
                                     res = res[0]
                                     # Присвоение переменным полученных значений из бд
                                     # ast.literal_eval преобразовывает строку в список
