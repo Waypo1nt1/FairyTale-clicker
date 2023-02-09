@@ -6,11 +6,12 @@ import Menu
 
 class SaveMenu:
     def __init__(self, width: int, height: int, save: bool) -> None:
-        self.width = width // 1.5
-        self.height = height // 1.5
+        self.width = width // 1.5  # Ширина
+        self.height = height // 1.5  # Высота
         self.buttons = list()
-        self.text = 'Save' if save else 'Load'
-        self.font1 = pygame.font.Font('data/fonts/at01.ttf', int(self.height // 11.52))
+        self.text = 'Save' if save else 'Load'  # Текст на кнопке - Если находимся в главном меню, то Load,
+                                                # а если в игре, то Save
+        self.font1 = pygame.font.Font('data/fonts/at01.ttf', int(self.height // 11.52))  # Подгружаем шрифты
         self.font2 = pygame.font.Font('data/fonts/at01.ttf', int(self.height // 14.4))
         self.font3 = pygame.font.Font('data/fonts/at01.ttf', int(self.height // 8.22))
         self.res = list()
