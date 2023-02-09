@@ -1,3 +1,4 @@
+# Импорт библиотек и файлов
 import pygame
 from load_image import load_image
 import Game
