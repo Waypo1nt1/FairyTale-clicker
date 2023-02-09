@@ -143,7 +143,7 @@ def run() -> None:
                 if menu.coin.get_rect(topleft=(screen.get_width() //
                                                menu.coin_x, screen.get_height() //
                                                menu.coin_y)).collidepoint(event.pos) and menu.drop:
-                    menu.collect_coin()  # Вызов метода сбора монеты
+                    menu.collect_coin()  # Вызов метода сбора монетки
                 if save_menu:
                     if savemenu.close_btn.collidepoint(event.pos):
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)

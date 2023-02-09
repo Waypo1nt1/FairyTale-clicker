@@ -50,14 +50,15 @@ class Menu:
         self.coin_x = 1.4  # Коэффициент для деления длины экрана на x
         self.coin_y = 1.4  # Коэффициент для деления высоты экрана на y
         self.characters = characters  # Текст на окнах персонажей
-        self.boss = True if self.level % 5 == 0 else False
-        self.drop = False
-        self.coin_sound = pygame.mixer.Sound('data/sounds/collect_coin.wav')
-        self.coin_sound.set_volume(0.3)
-        self.draw_border(surface)
-        self.draw_characters(surface)
+        self.boss = True if self.level % 5 == 0 else False  # Данная сущность босс или нет (зависит от уровня)
+        self.drop = False  # Монетка не лежит на земле
+        self.coin_sound = pygame.mixer.Sound('data/sounds/collect_coin.wav') # Звук сбора монетки
+        self.coin_sound.set_volume(0.3)  # Громкость сбора монетки
+        self.draw_border(surface)  # Отрисовка границ меню
+        self.draw_characters(surface)  # Отрисовка персонажей
 
     def draw_border(self, surface: pygame.Surface) -> None:
+        # Отрисовка границ меню (выбор уровней тоже меню)
         self.rect = pygame.draw.rect(surface, (253, 217, 181), (0, 0, self.width, self.height))
         self.rect2 = pygame.draw.rect(surface, (205, 149, 117), (20, 20, self.width - 40, self.height - 40))
         self.rect_bottom = pygame.draw.rect(surface, (205, 149, 117), (surface.get_width() // 2,
@@ -65,13 +66,15 @@ class Menu:
                                                                        surface.get_width() // 2, 90))
 
     def draw_characters(self, surface: pygame.Surface) -> None:
-        for elem in self.heroes:
-            if self.heroes.index(elem) > 1:
+        for elem in self.heroes:  # Цикл по картинкам героев
+            if self.heroes.index(elem) > 1:  # Если герой бьёт дпсом
+                # Если данное и прошлое количество купленных равны нулю, то не отрисовывать
                 if self.price[self.heroes.index(elem)][1] == '0' and self.price[self.heroes.index(elem) - 1][1] == '0':
                     break
             character = elem
             character_x = 5
             character_y = 20 + self.heroes.index(elem) * self.border_height
+            # Отрисовка границы персонажа, кнопки
             self.character_border = pygame.draw.rect(surface, (121, 85, 61),
                                                      (30, 30 + self.heroes.index(elem) * self.border_height +
                                                       self.heroes.index(elem), self.border_width, self.border_height))
@@ -88,33 +91,37 @@ class Menu:
                                                                             self.border_height +
                                                                             self.heroes.index(elem), self.btn_width,
                                                                             self.btn_height), 5)
+            # Текст цены на кнопке
             text_price = self.font.render(self.price[self.heroes.index(elem)][0], True, '#FFD700')
             text_price_x = (self.border_width - self.btn_width) + self.width * 2 // 70
             text_price_y = self.border_height - self.btn_height + (self.heroes.index(elem) * self.border_height +
                                                                    self.heroes.index(elem) + self.btn_height // 2 -
                                                                    self.height // 40)
-            surface.blit(text_price, (text_price_x, text_price_y))
-            text_name = self.font.render(self.characters[self.heroes.index(elem)], True, '#ffffff')
+            surface.blit(text_price, (text_price_x, text_price_y))  # Отрисовка текста на кнопке
+            text_name = self.font.render(self.characters[self.heroes.index(elem)], True, '#ffffff')  # Имя персонажа
             surface.blit(text_name, (character_x + self.character_border.w // 3,
                          character_y + self.character_border.h // 5))
+            # Количество покупок данного персонажа
             text_amount = self.font.render(f'Lvl {self.price[self.heroes.index(elem)][1]}', True, '#ffffff')
             surface.blit(text_amount, (character_x + self.character_border.w // 3,
-                         character_y + self.character_border.h // 5 + self.height // 30 * 2))
-            if self.heroes.index(elem) != 0:
+                         character_y + self.character_border.h // 5 + self.height // 30 * 2))  # Отрисовка "уровня"
+            if self.heroes.index(elem) != 0:  # Если герой бьёт дпсом
                 text_dmg = self.font.render(f'Dmg {int(self.price[self.heroes.index(elem)][2])}', True, '#ffffff')
             else:
                 text_dmg = self.font.render(f'Click dmg'
                                             f' {int(self.price[self.heroes.index(elem)][2]) * self.click_ratio}',
                                             True, '#ffffff')
             surface.blit(text_dmg, (character_x + self.character_border.w // 3,
-                                    character_y + self.character_border.h // 5 + self.height // 30))
-            if self.character_btn_back not in self.buttons:
+                                    character_y + self.character_border.h // 5 + self.height // 30))  # Отрисовка урона
+            if self.character_btn_back not in self.buttons:  # Если кнопка ещё не добавлена в список
                 self.buttons.append(self.character_btn_back)
-            surface.blit(character, (character_x, character_y))
-            if self.drop:
+            surface.blit(character, (character_x, character_y))  # Отрисовка изображения персонажа
+            if self.drop:  # Если монетка лежит на земле
+                # Отрисовка монетки
                 surface.blit(self.coin, (surface.get_width() // self.coin_x, surface.get_height() // self.coin_y))
 
     def draw_stats(self, surface: pygame.Surface) -> None:
+        # Отрисовка текста со статистикой
         text_balance = self.font.render(f'Gold: {self.balance}', True, '#FFD700')
         surface.blit(text_balance, (self.rect.width + 30, 3))
         text_click_damage = self.font.render(f'Click Damage: {self.dmg}', True, '#ffffff')
@@ -127,16 +134,17 @@ class Menu:
         surface.blit(text_killed, (self.rect.width + 30, 3 + self.height // 34.56 * 3))
 
     def draw_levels(self, surface: pygame.Surface) -> None:
-        ratio = 3 if self.level != 1 else 2
+        ratio = 3 if self.level != 1 else 2  # Коэффициент количества показываемых уровней (при первом уровне 2)
         ratio_margin = 4 if self.level != 1 else 3
-        margin = self.height // 172.8
-        square_wh = self.height // 14.4
+        margin = self.height // 172.8  # Отступ
+        square_wh = self.height // 14.4  # Длина и высота квадрата кнопки уровня
         levels_border_width = square_wh * ratio + margin * ratio_margin
         self.levels_border = pygame.draw.rect(surface, (121, 85, 61), (self.rect_bottom.centerx - levels_border_width
                                               // 2, self.rect_bottom.centery - square_wh // 2, levels_border_width,
-                                                                       square_wh + 4))
-        color = '#6f47D7' if len(self.killed) > self.level else '#808080'
-        if self.level != 1:
+                                                                       square_wh + 4))  # Граница уровней
+        color = '#6f47D7' if len(self.killed) > self.level else '#808080'  # Уровень заблокирован если данный уровень
+        # является максимально открытым
+        if self.level != 1:  # Если уровень не первый, то отрисовка 3 кнопок уровней
             text_cur_level = self.font.render(f'{self.level}', True, '#FFD700')
             text_prev_level = self.font.render(f'{self.level - 1}', True, '#FFD700')
             text_next_level = self.font.render(f'{self.level + 1}', True, '#FFD700')
@@ -156,7 +164,7 @@ class Menu:
                                            self.prev_level_square.y + text_prev_level.get_height() // 7))
             surface.blit(text_next_level, (self.next_level_square.x + square_wh // 2 - text_next_level.get_width() // 2,
                                            self.next_level_square.y + text_next_level.get_height() // 7))
-        else:
+        else: # Если уровень первый, то 2 кнопки (данный уровень и следующий)
             text_cur_level = self.font.render(f'{self.level}', True, '#FFD700')
             text_next_level = self.font.render(f'{self.level + 1}', True, '#FFD700')
             self.cur_level_square = pygame.draw.rect(surface, '#37178C', (self.levels_border.x + margin,
@@ -169,13 +177,13 @@ class Menu:
                                           self.cur_level_square.y + text_cur_level.get_height() // 8))
             surface.blit(text_next_level, (self.next_level_square.x + square_wh // 2 - text_next_level.get_width() // 2,
                                            self.next_level_square.y + text_next_level.get_height() // 8))
-        if self.boss:
-            self.show_timer(surface)
-        if self.time == '0':
+        if self.boss:  # Если сущность - босс
+            self.show_timer(surface)  # Отрисовка таймера
+        if self.time == '0':  # Если закончилось время, возврат времени на начальное значение и вызов новой сущности
             self.time = '20'
             Game.new_sprite()
 
-    def draw_save_btn(self, surface: pygame.Surface) -> None:
+    def draw_save_btn(self, surface: pygame.Surface) -> None:  # Отрисовка кнопки сохранения
         self.save_btn_back = pygame.draw.rect(surface, '#000000', (self.width * 2 - self.btn_width - 15, 5,
                                                                    self.btn_width + 10, self.btn_height + 10))
         self.save_btn_front = pygame.draw.rect(surface, '#6f47D7',
@@ -186,16 +194,16 @@ class Menu:
                                      save_btn_text.get_width() // 2, self.btn_height // 2 -
                                      save_btn_text.get_height() // 2.5))
 
-    def btn_pressed(self, pos: tuple) -> tuple:
+    def btn_pressed(self, pos: tuple) -> tuple:  # Проверка на координаты нажатой кнопки
         for elem in self.buttons:
             if pos[0] in range(elem.x, elem.x + int(self.btn_width)) and pos[1] in range(elem.y, elem.y +
                                                                                          int(self.btn_height)):
                 return True, elem
         return False, ''
 
-    def verify_balance(self, btn: pygame.Rect) -> None:
-        left = eval(f"{self.balance} - {self.price[self.buttons.index(btn)][0]}")
-        if left >= 0:
+    def verify_balance(self, btn: pygame.Rect) -> None:  # Проверка, хватает ли золота
+        left = eval(f"{self.balance} - {self.price[self.buttons.index(btn)][0]}")  # Оставшееся золото после покупки
+        if left >= 0:  # Если хватает (осталось >= 0)
             self.balance = str(left)
             price = self.price[self.buttons.index(btn)]
             price[0] = str(int(price[0]) + int(int(price[0]) * 0.07))
@@ -207,7 +215,7 @@ class Menu:
             else:
                 self.dps += int(price[2])
 
-    def verify_level(self, level: str) -> None:
+    def verify_level(self, level: str) -> None:  # Проверка уровня, изменение текущего в случае успешной проверки
         if level == 'next':
             if len(self.killed) > self.level:
                 self.level += 1
@@ -215,7 +223,8 @@ class Menu:
                 return
         elif level == 'prev':
             self.level -= 1
-        self.cur_killed = self.killed[self.level - 1]
+        self.cur_killed = self.killed[self.level - 1]  # Изменение текущего количества убитых сущностей на данном уровне
+        # Переназначение переменных для соответствия текущему уровню
         self.boss_killed = 3 ** (self.level // 5)
         self.enemies_hp_now = str(self.level * 10 * self.boss_killed + int(self.bonus[self.level // 5]))
         self.gold = str(self.level * 3 * self.boss_killed)
@@ -223,23 +232,23 @@ class Menu:
             if self.level % 5 == 0 else str(self.level * 3 * self.boss_killed)
         self.boss = True if self.level % 5 == 0 else False
         self.time = '20'
-        Game.new_sprite()
+        Game.new_sprite()  # Новая сущность, соответствующая текущему уровню
 
-    def show_timer(self, surface: pygame.Surface) -> None:
+    def show_timer(self, surface: pygame.Surface) -> None: # Отрисовка таймера убийства босса
         font = pygame.font.Font('data/fonts/at01.ttf', int(self.height // 8.64))
         text_timer = font.render(f'{self.time}/20', True, '#000000')
         surface.blit(text_timer, (surface.get_width() // 1.4 - text_timer.get_width() // 3,
                                   surface.get_height() // 2.3))
 
-    def collect_coin(self) -> None:
-        if self.sfx:
+    def collect_coin(self) -> None:  # Сбор монетки
+        if self.sfx:  # Если включены sfx
             self.coin_sound.play()
-        self.drop = False
-        self.balance = str(int(self.balance) + int(self.gold_now))
+        self.drop = False  # Монетка исчезает с земли
+        self.balance = str(int(self.balance) + int(self.gold_now)) # Добавление золота к балансу
 
-    def draw_sound_buttons(self, surface: pygame.Surface) -> None:
-        img_sfx = 'img/static/btn_sfx.png' if self.sfx else 'img/static/btn_sfx_off.png'
-        img_music = 'img/static/btn_music.png' if self.music else 'img/static/btn_music_off.png'
+    def draw_sound_buttons(self, surface: pygame.Surface) -> None: # Отрисовка кнопок громкости
+        img_sfx = 'img/static/btn_sfx.png' if self.sfx else 'img/static/btn_sfx_off.png'  # Вкл и выкл версии
+        img_music = 'img/static/btn_music.png' if self.music else 'img/static/btn_music_off.png'  # Вкл и выкл версии
         self.sfx_button = pygame.transform.scale(load_image(img_sfx),
                                                  (self.width // 11.5, self.height // 13))
         self.music_button = pygame.transform.scale(load_image(img_music),
