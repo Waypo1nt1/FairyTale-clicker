@@ -1,3 +1,4 @@
+# Импорт библиотек и файлов
 import random
 import pygame
 from load_image import load_image
@@ -9,18 +10,21 @@ from Menu import Menu
 
 def new_sprite() -> None:
     global entity, sound_dmg, sound_dead
-    if already:
+    if already:  # Если уже была инициализирована сущность
         entity.off = True
-        entity.kill()
-    ent_id = random.randint(0, 3)
-    if not menu.boss:
+        entity.kill()  # "Убийство" сущности
+    ent_id = random.randint(0, 3)  # Случайный id для случайного спрайта
+    if not menu.boss:  # Если сущность не является боссом
+        # Расчет здоровья сущности
         health_all = random.randint(int(menu.enemies_hp_now),
                                     int(menu.enemies_hp_now) + int(menu.enemies_hp_now) // 5)
     else:
+        # Расчет здоровья босса
         health_all = random.randint(int(menu.enemies_hp_now) * 10,
                                     int(menu.enemies_hp_now) * 10 + int(menu.enemies_hp_now) // 3)
-    gold = random.randint(int(menu.gold), int(int(menu.gold) * 1.5))
+    gold = random.randint(int(menu.gold), int(int(menu.gold) * 1.5))  # Расчет выпадаемого золота
     if ent_id == 0:
+        # Инициализация сущности (класс AnimatedSprite)
         entity = AnimatedSprite(load_image('img/Sprites/Slime_afk Sprite Sheet.png'),
                                 load_image('img/Sprites/Slime_dmg Sprite Sheet.png'),
                                 load_image('img/Sprites/Slime_dead Sprite Sheet.png'), 4, 1, 4, 1, 7, 1, WIDTH // 1.5,
@@ -28,6 +32,7 @@ def new_sprite() -> None:
         sound_dmg = pygame.mixer.Sound('data/sounds/slime_dmg.mp3')
         sound_dead = pygame.mixer.Sound('data/sounds/slime_dead.mp3')
     elif ent_id == 1:
+        # Инициализация сущности (класс AnimatedSprite)
         entity = AnimatedSprite(load_image('img/Sprites/Cobra_afk Sprite Sheet.png'),
                                 load_image('img/Sprites/Cobra_dmg Sprite Sheet.png'),
                                 load_image('img/Sprites/Cobra_dead Sprite Sheet.png'), 8, 1, 4, 1, 6, 1, WIDTH // 1.45,
@@ -36,6 +41,7 @@ def new_sprite() -> None:
         sound_dead = pygame.mixer.Sound('data/sounds/cobra_dead.mp3')
         sound_dead.set_volume(0.1)
     elif ent_id == 2:
+        # Инициализация сущности (класс AnimatedSprite)
         entity = AnimatedSprite(load_image('img/Sprites/Imp_afk Sprite Sheet.png'),
                                 load_image('img/Sprites/Imp_dmg Sprite Sheet.png'),
                                 load_image('img/Sprites/Imp_dead Sprite Sheet.png'), 7, 1, 4, 1, 6, 1, WIDTH // 1.45,
@@ -44,6 +50,7 @@ def new_sprite() -> None:
         sound_dead = pygame.mixer.Sound('data/sounds/imp_dead.mp3')
         sound_dead.set_volume(0.1)
     elif ent_id == 3:
+        # Инициализация сущности (класс AnimatedSprite)
         entity = AnimatedSprite(load_image('img/Sprites/Kobold_afk Priest Sprite Sheet.png'),
                                 load_image('img/Sprites/Kobold_dmg Priest Sprite Sheet.png'),
                                 load_image('img/Sprites/Kobold_dead Priest Sprite Sheet.png'), 4, 1, 4, 1, 7, 1,
@@ -52,7 +59,7 @@ def new_sprite() -> None:
         sound_dead = pygame.mixer.Sound('data/sounds/imp_dead.mp3')
         sound_dead.set_volume(0.1)
     sound_dmg.set_volume(0.1)
-    all_sprites.add(entity)
+    all_sprites.add(entity)  # Добавление спрайта в группу спрайтов
 
 
 def run() -> None:
