@@ -7,10 +7,11 @@ from typing import List
 class Menu:
     def __init__(self, surface: pygame.Surface, width: int, height: int, characters: tuple,
                  price: List[List[str]], balance: str, level: int, killed: List[str], bonus: List[str]) -> None:
-        self.width = width
-        self.height = height
-        self.sfx = True
-        self.music = True
+        self.width = width  # Длина меню
+        self.height = height  # Высота меню
+        self.sfx = True  # sfx включены
+        self.music = True  # Музыка включена
+        # Изображения героев (resize под размер окна)
         self.heroes = [pygame.transform.scale(load_image('img/Static/main_character.png'),
                                               (130, int(height // 5.9))),
                        pygame.transform.scale(load_image('img/Static/Ranger.png'),
@@ -23,31 +24,32 @@ class Menu:
                                               (130, int(height // 5.5))),
                        pygame.transform.scale(load_image('img/Static/Elf_King.png'),
                                               (196, int(height // 5.8)))]
-        self.coin = pygame.image.load('data/img/Static/coin.png')
-        self.font = pygame.font.Font('data/fonts/at01.ttf', int(height // 17.28))
+        self.coin = pygame.image.load('data/img/Static/coin.png')  # Монетка (выпадает с сущностей)
+        self.font = pygame.font.Font('data/fonts/at01.ttf', int(height // 17.28))  # Шрифт
         self.price = price
-        self.balance = balance # деньги
+        self.balance = balance # Текущий баланс
         self.cur_killed = '0'  # Количество убийств на данном уровне
-        self.level = level
-        self.killed = killed
-        self.boss_killed = 3 ** (self.level // 5)
-        self.bonus = bonus
-        self.enemies_hp_now = str(self.level * 10 * self.boss_killed + int(self.bonus[self.level // 5]))
+        self.level = level  # Текущий уровень
+        self.killed = killed  # Список количества убитых сущностей по уровням
+        self.boss_killed = 3 ** (self.level // 5)  # коэффициент для увеличения здоровья сущностей и количества золота
+        # для текущего количества пройденных уровней с боссами
+        self.bonus = bonus  # Бонусные очки здоровья для текущего количества пройденных уровней с бонусами
+        self.enemies_hp_now = str(self.level * 10 * self.boss_killed + int(self.bonus[self.level // 5]))  # Текущее хп
         self.gold = self.gold = str(int(str(self.level * 3 * self.boss_killed)) * 5)\
-            if self.level % 5 == 0 else str(self.level * 3 * self.boss_killed)
-        self.gold_now = self.gold
-        self.time = '20'
-        self.click_ratio = 1
-        self.border_width = self.width - 60
-        self.border_height = (self.height - 40) // 6.14
-        self.btn_width = self.border_width // 4.7
-        self.btn_height = self.border_height // 1.55
-        self.buttons = []
-        self.dps = sum(int(elem[1]) * int(elem[2]) for elem in price[1:])
-        self.dmg = int(price[0][1]) * int(price[0][2])
-        self.coin_x = 1.4
-        self.coin_y = 1.4
-        self.characters = characters
+            if self.level % 5 == 0 else str(self.level * 3 * self.boss_killed)  # Количество выпадаемого золота
+        self.gold_now = self.gold  # Для увеличения баланса
+        self.time = '20'  # Время для босса
+        self.click_ratio = 1  # Коэффициент умножения урона от клика
+        self.border_width = self.width - 60  # Длина границы окна персонажа
+        self.border_height = (self.height - 40) // 6.14  # Высота границы окна персонажа
+        self.btn_width = self.border_width // 4.7  # Длина кнопки покупки персонажа
+        self.btn_height = self.border_height // 1.55  # Ширина кнопки покупки персонажа
+        self.buttons = []  # Список кнопок покупки (заполнится при отрисовке)
+        self.dps = sum(int(elem[1]) * int(elem[2]) for elem in price[1:])  # Урон в секунду
+        self.dmg = int(price[0][1]) * int(price[0][2])  # Урон от клика
+        self.coin_x = 1.4  # Коэффициент для деления длины экрана на x
+        self.coin_y = 1.4  # Коэффициент для деления высоты экрана на y
+        self.characters = characters  # Текст на окнах персонажей
         self.boss = True if self.level % 5 == 0 else False
         self.drop = False
         self.coin_sound = pygame.mixer.Sound('data/sounds/collect_coin.wav')

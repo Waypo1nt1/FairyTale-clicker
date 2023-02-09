@@ -16,5 +16,5 @@ def load_image(name: str, colorkey=None) -> pygame.Surface:
             colorkey = image.get_at((0, 0))
         image.set_colorkey(colorkey)  # Переданный цвет colorkey станет прозрачным
     else:
-        image = image.convert_alpha()  # Изображение уже прозрачно аааааа
+        image = image.convert_alpha()  # Изображение уже прозрачно
     return image
