@@ -30,7 +30,7 @@ if __name__ == '__main__':
     texts = ['New game', 'Load', 'Quit']  # Список с текстами на кнопках (для дальнейшего использования в цикле)
     btns = [btn_game, btn_options, btn_quit]  # Список с кнопками (для дальнейшего использования в цикле)
     sound_hover = pygame.mixer.Sound('data/sounds/menu_hover.mp3')  # Звук при наведении на одну из кнопок
-    sound_hover.set_volume(0.1)  # Установка громкости
+    sound_hover.set_volume(0.05)  # Установка громкости
     music_id = random.randint(0, 2)  # id для случайной музыки при каждом запуске
     if music_id == 0:
         main_menu_music = pygame.mixer.Sound('data/music/main_menu1.wav')
@@ -38,7 +38,7 @@ if __name__ == '__main__':
         main_menu_music = pygame.mixer.Sound('data/music/main_menu2.wav')
     elif music_id == 2:
         main_menu_music = pygame.mixer.Sound('data/music/main_menu3.wav')
-    main_menu_music.set_volume(0.1)  # Установка громкости
+    main_menu_music.set_volume(0.05)  # Установка громкости
     main_menu_music.play(-1)  # play с бесконечным повтором
     game = False  # Переменная, отвечающая за начало игры
     played = False  # Переменная для hover'а (отслеживание, был ли сыгран звук hover'а или нет)
